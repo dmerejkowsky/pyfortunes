@@ -8,9 +8,12 @@ setup(name='pyfortunes',
     author = 'yannicklm',
     packages = ['pyfortunes'],
     scripts  = [
-        'pyfortunes/bin/pyf-srv',
         'pyfortunes/bin/pyf-add',
         'pyfortunes/bin/pyf-get',
+        'pyfortunes/bin/pyfd',
+    ],
+    data_files = [
+        ('/etc', ["etc/pyfd.conf"]),
     ],
     license  = 'BSD',
     classifiers      = [

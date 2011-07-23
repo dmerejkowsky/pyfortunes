@@ -61,23 +61,3 @@ def run_server(directory, port):
     except KeyboardInterrupt:
         return
 
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("fortune_directory")
-    parser.add_argument("--port",
-        help="Port to listen to. Defaults to 8080",
-        type=int)
-    parser.set_defaults(
-        port='8080')
-    args = parser.parse_args()
-    fortune_directory = args.fortune_directory
-    fortune_directory = os.path.abspath(fortune_directory)
-    if not os.path.isdir(fortune_directory):
-        raise Exception("'%s' is not a directory!" % fortune_directory)
-    run_server(fortune_directory, args.port)
-
-if __name__ == "__main__":
-    main()
-
-
