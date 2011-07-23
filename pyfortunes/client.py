@@ -29,7 +29,7 @@ def ask_category(choices):
         except ValueError:
             print("Please enter number")
             continue
-        if index not in list(range(1, len(choices)+1)):
+        if index not in range(1, len(choices)+1):
             print("%i is out of range" % index)
             continue
         res = choices[index-1]
