@@ -4,7 +4,7 @@
 
 import os
 import argparse
-import xmlrpc
+import xmlrpc.server
 
 import pyfortunes
 
@@ -17,7 +17,7 @@ class FortunesServer(xmlrpc.server.SimpleXMLRPCServer):
     """
     def __init__(self, directory, port=8080):
         self.directory = directory
-        SimpleXMLRPCServer.__init__(self, ("0.0.0.0", port))
+        xmlrpc.server.SimpleXMLRPCServer.__init__(self, ("0.0.0.0", port))
         self.register_function(self.add_fortune)
         self.register_function(self.get_categories)
         self.db = pyfortunes.backend.FortunesDB(directory)
