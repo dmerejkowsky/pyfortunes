@@ -1,8 +1,12 @@
 #!/usr/bin/python3
 
-import pyfortunes
+import re
 import argparse
 import sys
+import socket
+import xmlrpc.client
+
+import pyfortunes
 
 def main():
     parser = argparse.ArgumentParser()
@@ -20,4 +24,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except xmlrpc.client.Fault as e:
+        mess = e.faultString
+        # Get rid of the type of the exception:
+        mess = re.sub('<.*?>:', '', mess)
+        print(mess)
+        sys.exit(2)
+    except socket.error as e:
+        print(e)
+        sys.exit(2)
