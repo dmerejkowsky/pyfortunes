@@ -1,0 +1,68 @@
+PyFortunes: XML RPC Client/Server for a fortune database
+By fortune I mean http://en.wikipedia.org/wiki/Fortune_%28Unix%29[This software]
+
+WARNING: This is still mostly a work in progress. Please be careful...
+
+
+Description
+-----------
+
+This software is useful when you want to manage your own
+fortune database.
+
+Basically, a fortune database is just a bunch of plain text files in a directory
+(e.g '/usr/share/fortune/')
+
+Nothing prevents you from creating you own database. Just create a directory
+(e.g '~/.fortune'), and put your fortunes in plain text files, separating each
+fortune with +%+ on a single line.
+
+For instance, if you want to start a collection of fortunes about famous quotes
+from movies, just create a file '~/.fortune/movies' looking like
+
+----
+Steve McCroskey: Looks like I picked the wrong week to quit sniffing glue.
+  -- Airplane !
+%
+Ted Striker: Because of my mistake, six men didn't return from that raid.
+Elaine Dickinson: Seven. Lieutenant Zip died this morning.
+    Airplane !
+----
+
+Requirements
+------------
+
+The software is written using Python3
+
+Right now you need the fortune and stfrile executables from fortune-mod
+in your PATH.
+
+I may end up writing a Python3 only version.
+
+Usage
+-----
+
+----
+# From one shell:
+pyf-srv ~/.fortune
+
+# From other shell:
+
+# Display a fortune at random:
+pyf-get
+
+# Add a new fortune to the database:
+pyf-add
+
+
+----
+
+Note that the '.dat' file required for 'fortune' to work will be automatically
+created.
+
+
+Bugs
+----
+
+Probably many. Please use github bug tracker if you find one.
+
