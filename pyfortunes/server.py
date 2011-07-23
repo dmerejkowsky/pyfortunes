@@ -17,9 +17,7 @@ class FortunesServer(xmlrpc.server.SimpleXMLRPCServer):
     """
     def __init__(self, directory, port=8080):
         self.directory = directory
-        super().__init__(("0.0.0.0", port))
-        self.register_function(self.add_fortune)
-        self.register_function(self.get_categories)
+        super().__init__(("0.0.0.0", port), logRequests=False)
         self.db = pyfortunes.backend.FortunesDB(directory)
 
     def add_fortune(self, category, text):
@@ -28,6 +26,12 @@ class FortunesServer(xmlrpc.server.SimpleXMLRPCServer):
     def get_categories(self):
         return self.db.get_categories()
 
+    def get_fortune(self):
+        return self.db.get_fortune()
+
+    def get_fortune_from_category(self, category):
+        return self.db.get_fortune(category=category)
+
     def get_fortunes_zip(self):
         """ Returns an url where to download the whole fortunes
         collection
@@ -35,12 +39,23 @@ class FortunesServer(xmlrpc.server.SimpleXMLRPCServer):
         """
         return ""
 
+    def _dispatch(self, method, params):
+        """ Implements SimpleXMLRPCServer._dispatch.
+
+        """
+        # Every 'public' method is made available:
+        if method.startswith("_"):
+            return None
+        func = getattr(self, method)
+        return func(*params)
+
 
 def run_server(directory, port):
     """ Runs a fortunes server
 
     """
     server = FortunesServer(directory, port)
+    server.register_instance(server)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

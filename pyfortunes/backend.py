@@ -6,6 +6,9 @@ requests
 
 """
 
+import os
+import subprocess
+
 class FortunesDB():
     """
     Initialiazed with a fortune directory.
@@ -19,9 +22,42 @@ class FortunesDB():
         self.directory = directory
 
     def get_categories(self):
-        return ["misc", "jokes", "movies"]
+        res = [x for x in os.listdir(self.directory) if not x.endswith(".dat")]
+        res.sort()
+        return res
 
     def add_fortune(self, category, text):
-        print("Adding", category, text)
+        if not category:
+            raise Exception("category cannot be empty")
+        if not text:
+            raise Exception("text cannot be empty")
+        if not text.endswith("\n"):
+            text += "\n"
+        filename = os.path.join(self.directory, category)
+        with open(filename, "a") as fp:
+            fp.write("%\n")
+            fp.write(text)
+
+        output_ = subprocess.check_output(["strfile", filename])
         return True
+
+    def get_fortune(self, category=None):
+        """ Get a fortune.
+        If category is not None, only use fortunes from the
+        given category
+
+        """
+        cmd = ["fortune"]
+        if category:
+            if not category in self.get_categories():
+                raise Exception("'%s' : no such category" % category)
+            cmd.append(os.path.join(self.directory, category))
+        else:
+            cmd.append(self.directory)
+        try:
+            output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError:
+            return ""
+        output = output.strip()
+        return output.decode()
 

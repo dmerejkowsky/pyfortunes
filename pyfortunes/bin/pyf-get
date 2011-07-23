@@ -1,0 +1,23 @@
+#!/usr/bin/python3
+
+import pyfortunes
+import argparse
+import sys
+
+def main():
+    parser = argparse.ArgumentParser()
+    pyfortunes.client.configure_parser(parser)
+    parser.add_argument("category", nargs='?')
+    args = parser.parse_args()
+    url = args.url
+    category = args.category
+    proxy = pyfortunes.client.get_proxy(url)
+    fortune = pyfortunes.client.get_fortune(proxy,
+        category=category)
+    if not fortune.endswith("\n"):
+        fortune += "\n"
+    sys.stdout.write(fortune)
+
+
+if __name__ == "__main__":
+    main()

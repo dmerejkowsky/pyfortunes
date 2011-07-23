@@ -7,6 +7,8 @@ import subprocess
 import tempfile
 import xmlrpc.client
 
+DEFAULT_URL = "http://localhost:8080"
+
 def ask_category(choices):
     """Ask the user to choose from a list of choices,
     add allow to add another choice to the list
@@ -64,15 +66,29 @@ def add_fortune(proxy):
         print("No category given, aborting")
         return
 
+    print("Adding new fortune:\n{}[{}]".format(text, category))
     proxy.add_fortune(category, text)
 
+def configure_parser(parser):
+    """ Build a suitable argparse.ArgumentParser for
+    a client
 
-def get_proxy(url):
+    """
+    parser.add_argument("--url", help="Pyfortunes server url. "
+        "Defaults to %s" % DEFAULT_URL)
+    parser.set_defaults(url=DEFAULT_URL)
+
+def get_proxy(url=DEFAULT_URL):
     """ Get an XML RPC server proxy from an URL """
     proxy = xmlrpc.client.ServerProxy(url)
     return proxy
 
+def get_fortune(proxy, category=None):
+    if category is None:
+        return proxy.get_fortune()
+    else:
+        return proxy.get_fortune_from_category(category)
 
 if __name__ == "__main__":
-    proxy = get_proxy("http://localhost:8080/")
+    proxy = get_proxy()
     add_fortune(proxy)

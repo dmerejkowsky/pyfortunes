@@ -1,0 +1,15 @@
+#!/usr/bin/python3
+
+import pyfortunes
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser()
+    pyfortunes.client.configure_parser(parser)
+    args = parser.parse_args()
+    url = args.url
+    proxy = pyfortunes.client.get_proxy(url)
+    pyfortunes.client.add_fortune(proxy)
+
+if __name__ == "__main__":
+    main()
