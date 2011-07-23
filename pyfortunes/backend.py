@@ -22,6 +22,6 @@ class FortunesDB():
         return ["misc", "jokes", "movies"]
 
     def add_fortune(self, category, text):
-        print "Adding", category, text
+        print("Adding", category, text)
         return True
 

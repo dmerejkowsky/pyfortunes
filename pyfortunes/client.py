@@ -5,7 +5,7 @@ import os
 
 import subprocess
 import tempfile
-import xmlrpclib
+import xmlrpc.client
 
 def ask_category(choices):
     """Ask the user to choose from a list of choices,
@@ -13,24 +13,24 @@ def ask_category(choices):
 
     """
     for i, choice in enumerate(choices):
-        print "%3d. %s" % ((i+1), choice)
+        print("%3d. %s" % ((i+1), choice))
     keep_asking = True
     res = None
     while keep_asking:
-        answer = raw_input("> ")
+        answer = input("> ")
         if not answer:
             return choices[0]
         if answer == "N":
-            print "Please enter a new category"
-            res = raw_input("> ")
+            print("Please enter a new category")
+            res = input("> ")
             return res
         try:
             index = int(answer)
         except ValueError:
-            print "Please enter number"
+            print("Please enter number")
             continue
-        if index not in range(1, len(choices)+1):
-            print "%i is out of range" % index
+        if index not in list(range(1, len(choices)+1)):
+            print("%i is out of range" % index)
             continue
         res = choices[index-1]
         keep_asking = False
@@ -54,14 +54,14 @@ def add_fortune(proxy):
     os.remove(name)
 
     if not text:
-        print "Empty fortune, aborting"
+        print("Empty fortune, aborting")
         return
 
     categories = proxy.get_categories()
-    print ":: Please select a category, or 'N' to add a new one"
+    print(":: Please select a category, or 'N' to add a new one")
     category = ask_category(categories)
     if not category:
-        print "No category given, aborting"
+        print("No category given, aborting")
         return
 
     proxy.add_fortune(category, text)
@@ -69,7 +69,7 @@ def add_fortune(proxy):
 
 def get_proxy(url):
     """ Get an XML RPC server proxy from an URL """
-    proxy = xmlrpclib.ServerProxy(url)
+    proxy = xmlrpc.client.ServerProxy(url)
     return proxy
 
 

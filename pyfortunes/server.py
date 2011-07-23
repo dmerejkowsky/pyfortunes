@@ -4,7 +4,7 @@
 
 import os
 import argparse
-from SimpleXMLRPCServer import SimpleXMLRPCServer
+from xmlrpc.server import SimpleXMLRPCServer
 
 import pyfortunes
 
