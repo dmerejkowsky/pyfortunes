@@ -4,11 +4,11 @@
 
 import os
 import argparse
-from xmlrpc.server import SimpleXMLRPCServer
+import xmlrpc
 
 import pyfortunes
 
-class FortunesServer(SimpleXMLRPCServer):
+class FortunesServer(xmlrpc.server.SimpleXMLRPCServer):
     """
     Initialiazed with a fortune directory and a port
 

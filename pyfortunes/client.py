@@ -5,7 +5,7 @@ import os
 
 import subprocess
 import tempfile
-import xmlrpc.client
+import xmlrpc
 
 def ask_category(choices):
     """Ask the user to choose from a list of choices,
