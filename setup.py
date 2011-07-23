@@ -5,7 +5,7 @@ setup(name='pyfortunes',
     version='0.1',
     description='XML RPC client/server for a fortune database',
     author_email = 'yannicklm1337@gmail.com',
-    author = 'Yannick LM',
+    author = 'yannicklm',
     packages = ['pyfortunes'],
     scripts  = [
         'pyfortunes/bin/pyf-srv',
