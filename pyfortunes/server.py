@@ -6,27 +6,27 @@ import os
 import argparse
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 
+import pyfortunes
+
 class FortunesServer(SimpleXMLRPCServer):
     """
-    Initialiazed with a fortune directory.
+    Initialiazed with a fortune directory and a port
 
-    Can do stuff like:
-     - print a fortune at random
-     - add a new fortune
-     - list fortune categories
+    Exposes methods from the backend's FortunesDB class
+
     """
     def __init__(self, directory, port=8080):
         self.directory = directory
         SimpleXMLRPCServer.__init__(self, ("0.0.0.0", port))
         self.register_function(self.add_fortune)
         self.register_function(self.get_categories)
+        self.db = pyfortunes.backend.FortunesDB(directory)
 
     def add_fortune(self, category, text):
-        print "Adding", category, text
-        return True
+        return self.db.add_fortune(category, text)
 
     def get_categories(self):
-        return ["misc", "jokes", "movies"]
+        return self.db.get_categories()
 
     def get_fortunes_zip(self):
         """ Returns an url where to download the whole fortunes
@@ -34,7 +34,6 @@ class FortunesServer(SimpleXMLRPCServer):
 
         """
         return ""
-
 
 
 def run_server(directory, port):
