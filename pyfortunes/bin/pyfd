@@ -86,8 +86,8 @@ def detach_process():
     os.setsid()
     fork_then_exit_parent(error_message="Failed second fork")
 
-def write_pid_file(pid_file):
-    """ Write pid to the file
+def check_pid_file(pid_file):
+    """ Make sure pid file does not exist
 
     """
     if os.path.exists(pid_file):
@@ -97,6 +97,11 @@ If you are usre pyfd is not running, please \
 remove this file and try again""" % pid_file
         die(mess)
 
+
+def write_pid_file(pid_file):
+    """ Write pid to the file
+
+    """
     open_flags = (os.O_CREAT | os.O_EXCL | os.O_WRONLY)
     # rw-r--r--
     open_mode = (
@@ -149,10 +154,16 @@ def main():
         return
 
     if args.daemon:
+        # - Must be root to write in /var/run
+        # - Must write the pid *after* the process is detached (otherwise
+        #   we would write the wrong pid)
+        # - Must check the pid file *before* the process is detached
+        #   so that retcode is right
+        # - Must write the pid *before* changing user, because
+        #   /var/run is only writeable by root
+        check_pid_file(pid_file)
         detach_process()
-        # Must be root to write in /var/run
         write_pid_file(pid_file)
-        # So we change the process user right after
         change_process_user(user)
     pyfortunes.server.run_server(directory, port)
 
