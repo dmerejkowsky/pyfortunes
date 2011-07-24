@@ -1,4 +1,5 @@
 # Settings for pyfd daemon.
+# To be placed in /etc/pyfd.conf
 
 # For the default configuration to work, a
 # user named pyfd with a home directory /var/lib/pyfd

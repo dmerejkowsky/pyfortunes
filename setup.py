@@ -13,7 +13,7 @@ setup(name='pyfortunes',
         'pyfortunes/bin/pyfd',
     ],
     data_files = [
-        ('/etc', ["etc/pyfd.conf"]),
+        ('/usr/share/pyfortunes/', ["pyfd.conf.example"]),
     ],
     license  = 'BSD',
     classifiers      = [
