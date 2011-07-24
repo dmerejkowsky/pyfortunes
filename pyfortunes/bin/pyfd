@@ -29,17 +29,19 @@ def kill(pid_file):
     given file
 
     """
+    if not os.path.exists(pid_file):
+        die("Could not kill pyfd. %s does not exist" % pid_file)
+    with open(pid_file, "r") as fp:
+        pid_str = fp.read().strip()
     try:
-        with open(pid_file, "r") as fp:
-            pid_str = fp.read().strip()
         pid = int(pid_str)
         os.kill(pid, signal.SIGTERM)
     except Exception as e:
-        print("Warning: could not kill pyfd. Error was:", e)
+        die("Could not kill pyfd. Error was:", e)
     try:
         os.remove(pid_file)
-    except Exception:
-        print("Warning: could not remove pid file. Error was:", e)
+    except Exception as e:
+        die("Could not remove pid file. Error was:", e)
 
 
 def change_process_user(user_name):
