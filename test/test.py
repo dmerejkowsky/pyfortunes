@@ -88,10 +88,10 @@ This is a second quote
         db = self.get_db()
         self.assertEqual(db.get_fortune(), "")
         db.add_fortune("jokes", "This is a joke")
-        self.assertEqual(db.get_fortune(), "This is a joke")
+        self.assertEqual(db.get_fortune(), "This is a joke\n[jokes]")
         db.add_fortune("quotes", "This is a quote")
         self.assertEqual(db.get_fortune(category="quotes"),
-            "This is a quote")
+            "This is a quote\n[quotes]")
 
 
 
@@ -132,12 +132,12 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(proxy.get_categories(), ["jokes"])
 
         fortune = proxy.get_fortune()
-        self.assertEqual(fortune, "This is a joke")
+        self.assertEqual(fortune, "This is a joke\n[jokes]")
 
         proxy.add_fortune("quotes", "This is a quote")
         self.assertEqual(proxy.get_categories(), ["jokes", "quotes"])
         fortune = proxy.get_fortune_from_category("jokes")
-        self.assertEqual(fortune, "This is a joke")
+        self.assertEqual(fortune, "This is a joke\n[jokes]")
 
         self.assertRaises(xmlrpc.client.Fault,
             proxy.get_fortune_from_category, "doesnotexist")

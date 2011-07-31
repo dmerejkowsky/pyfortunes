@@ -61,14 +61,15 @@ class FortunesDB():
             for line in fp:
                 if line == "%\n":
                     if cur_fortune:
-                        # Remove last \n
-                        fortunes.append(cur_fortune[:-1])
+                        fortunes.append(cur_fortune)
                     cur_fortune = ""
                 else:
                     cur_fortune += line
         # If file does not end with '%\n', we can have one
         # fortune left:
         if cur_fortune:
-            # Remove last \n
-            fortunes.append(cur_fortune[:-1])
-        return random.choice(fortunes)
+            fortunes.append(cur_fortune)
+        fortune = random.choice(fortunes)
+        # Huge improvement from the 'fortune' executable:
+        # also display the category from which the fortune came from
+        return fortune + "[%s]" % category
