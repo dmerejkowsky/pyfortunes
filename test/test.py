@@ -1,8 +1,3 @@
-""" Testing backend
-
-"""
-
-
 import os
 import shutil
 import socket
