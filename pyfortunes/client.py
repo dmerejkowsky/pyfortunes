@@ -41,19 +41,21 @@ def ask_category(choices):
 
 
 
-def add_fortune(proxy):
-    """ Add a new fortune
+def add_fortune(proxy, text=None):
+    """ Add a new fortune.
+
+    If fortune is not given, fire up and editor to
+    let the user enter one.
 
     """
-    (fd, name) = tempfile.mkstemp()
-    retcode = subprocess.call(["vim", name])
-    if retcode != 0:
-        return
-
-    fp = os.fdopen(fd, "r")
-    text = fp.read()
-    fp.close()
-    os.remove(name)
+    if not text:
+        (fd, name) = tempfile.mkstemp()
+        retcode = subprocess.call(["vim", name])
+        if retcode != 0:
+            return
+        with open(name, "r", encoding='utf-8') as fp:
+            text = fp.read()
+        os.remove(name)
 
     if not text:
         print("Empty fortune, aborting")

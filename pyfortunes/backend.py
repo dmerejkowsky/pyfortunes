@@ -34,7 +34,7 @@ class FortunesDB():
         if not text.endswith("\n"):
             text += "\n"
         filename = os.path.join(self.directory, category)
-        with open(filename, "a") as fp:
+        with open(filename, "a", encoding='utf-8') as fp:
             fp.write("%\n")
             fp.write(text)
 

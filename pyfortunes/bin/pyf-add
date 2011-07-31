@@ -6,10 +6,20 @@ import argparse
 def main():
     parser = argparse.ArgumentParser()
     pyfortunes.client.configure_parser(parser)
+    parser.add_argument('text_file', nargs='?',
+        help='Path where to read the fortune text',
+        type=argparse.FileType('r')
+    )
     args = parser.parse_args()
     url = args.url
+    text_fp  = args.text_file
+    if text_fp:
+        text = text_fp.read()
+        text_fp.close()
+    else:
+        text = None
     proxy = pyfortunes.client.get_proxy(url)
-    pyfortunes.client.add_fortune(proxy)
+    pyfortunes.client.add_fortune(proxy, text=text)
 
 if __name__ == "__main__":
     main()
