@@ -8,9 +8,9 @@ setup(name='pyfortunes',
     author = 'yannicklm',
     packages = ['pyfortunes'],
     scripts  = [
-        'pyfortunes/bin/pyf-add',
-        'pyfortunes/bin/pyf-get',
-        'pyfortunes/bin/pyfd',
+        'bin/pyf-add',
+        'bin/pyf-get',
+        'bin/pyfd',
     ],
     data_files = [
         ('/usr/share/pyfortunes/', ["pyfd.conf.example"]),
