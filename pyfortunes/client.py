@@ -41,11 +41,14 @@ def ask_category(choices):
 
 
 
-def add_fortune(proxy, text=None):
+def add_fortune(proxy, text=None, category=None):
     """ Add a new fortune.
 
     If fortune is not given, fire up and editor to
     let the user enter one.
+
+    If category is not given, ask the list of the categories
+    to the server and let the user choose one.
 
     """
     if not text:
@@ -61,12 +64,13 @@ def add_fortune(proxy, text=None):
         print("Empty fortune, aborting")
         return
 
-    categories = proxy.get_categories()
-    print(":: Please select a category, or 'N' to add a new one")
-    category = ask_category(categories)
     if not category:
-        print("No category given, aborting")
-        return
+        categories = proxy.get_categories()
+        print(":: Please select a category, or 'N' to add a new one")
+        category = ask_category(categories)
+        if not category:
+            print("No category given, aborting")
+            return
 
     print("Adding new fortune:\n{}[{}]".format(text, category))
     proxy.add_fortune(category, text)
