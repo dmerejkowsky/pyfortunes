@@ -46,19 +46,21 @@ settings.
 Usage
 -----
 
-::
+First, start the daemon:
+* On unix
+  * Edit /etc/pyfd.conf, and run /usr/bin/pyfd
 
-  # Copy the /usr/share/pyfortunes/pyfd.conf.example
-  # to /path/to/pyfd.conf, then run
-  $ pyfd /path/to/pyfd.conf
+* On windows
+  * Edit c:\Python32\Lib\site-packages\pyfortunes\pyfd.conf
+  * Run c:\Python32\Scripts\install_pyfd_service.bat as administrator
 
-  # Now you can run:
+Now you can run::
 
-  $ pyf-get
-  # (to get a fortune at random)
+  pyf-get
+  (to get a fortune at random)
 
-  $ pyf-add
-  # (to add a new fotune to the database)
+   pyf-add
+  (to add a new fotune to the database)
 
 
 Bugs
