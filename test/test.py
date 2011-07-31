@@ -5,6 +5,7 @@
 
 import os
 import shutil
+import socket
 import subprocess
 import tempfile
 import threading
@@ -112,13 +113,20 @@ class ServerThread(threading.Thread):
 
 class ServerTest(unittest.TestCase):
     def  setUp(self):
+        # Find a free port:
+        sock = socket.socket()
+        sock.bind(('', 0))
+        port = sock.getsockname()[1]
+        sock.close()
+        self.port = port
         tmp_dir = tempfile.mkdtemp()
-        self.server = pyfortunes.server.FortunesServer(tmp_dir)
+        self.server = pyfortunes.server.FortunesServer(tmp_dir, port=self.port)
         self.server_thread = ServerThread(self.server)
         self.server_thread.start()
 
     def test_server_api(self):
-        proxy = pyfortunes.client.get_proxy()
+        url = "http://localhost:%d" % self.port
+        proxy = pyfortunes.client.get_proxy(url)
 
         self.assertRaises(xmlrpc.client.Fault, proxy.does_not_exists)
         self.assertRaises(xmlrpc.client.Fault, proxy.add_fortune,
