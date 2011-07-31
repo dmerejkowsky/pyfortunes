@@ -2,6 +2,7 @@
 
 """
 import os
+import sys
 
 import subprocess
 import tempfile
@@ -51,14 +52,23 @@ def add_fortune(proxy, text=None, category=None):
     to the server and let the user choose one.
 
     """
+    on_win = sys.platform.startswith("win")
     if not text:
-        (fd, name) = tempfile.mkstemp()
-        retcode = subprocess.call(["vim", name])
+        if on_win:
+            tmp = os.environ["TEMP"]
+        else:
+            tmp = "/tmp"
+        tmp_file = os.path.join(tmp, "fortune.txt")
+        # FIXME: do not hard code text editor
+        if on_win:
+            retcode = subprocess.call([r"C:\Program Files (x86)\Vim\vim73\gvim.exe", tmp_file])
+        else:
+            retcode = subprocess.call(["vim", tmp_file])
         if retcode != 0:
             return
-        with open(name, "r", encoding='utf-8') as fp:
+        with open(tmp_file, "r", encoding='utf-8') as fp:
             text = fp.read()
-        os.remove(name)
+        os.remove(tmp_file)
 
     if not text:
         print("Empty fortune, aborting")
