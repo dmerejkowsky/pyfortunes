@@ -6,7 +6,6 @@
 import os
 import shutil
 import socket
-import subprocess
 import tempfile
 import threading
 import unittest
@@ -36,14 +35,9 @@ class BackendTest(unittest.TestCase):
         db = self.get_db()
         db.add_fortune("quotes", "This is a quote")
         quotes = os.path.join(self.tmp_dir, "quotes")
-        quotes_dat = quotes + ".dat"
-        _assert_exists(self, quotes)
         with open(quotes, "r") as fp:
             contents = fp.read()
         self.assertEqual(contents, "%\nThis is a quote\n")
-        _assert_exists(self, quotes_dat)
-        fortune_out = subprocess.check_output(["fortune", quotes])
-        self.assertEqual(fortune_out, b"This is a quote\n")
 
     def test_add_to_existing_category(self):
         quotes = os.path.join(self.tmp_dir, "quotes")
@@ -57,8 +51,6 @@ class BackendTest(unittest.TestCase):
 %
 This is a second quote
 """)
-        quotes_dat = quotes + ".dat"
-        _assert_exists(self, quotes_dat)
 
 
     def test_get_categories(self):

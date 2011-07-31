@@ -7,7 +7,7 @@ requests
 """
 
 import os
-import subprocess
+import random
 
 class FortunesDB():
     """
@@ -38,26 +38,37 @@ class FortunesDB():
             fp.write("%\n")
             fp.write(text)
 
-        output_ = subprocess.check_output(["strfile", filename])
         return True
-
     def get_fortune(self, category=None):
         """ Get a fortune.
         If category is not None, only use fortunes from the
         given category
 
         """
-        cmd = ["fortune"]
-        if category:
-            if not category in self.get_categories():
-                raise Exception("'%s' : no such category" % category)
-            cmd.append(os.path.join(self.directory, category))
-        else:
-            cmd.append(self.directory)
-        try:
-            output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError:
+        categories = self.get_categories()
+        if not categories:
             return ""
-        output = output.strip()
-        return output.decode()
+        if category:
+            if not category in categories:
+                raise Exception("'%s' : no such category" % category)
+        else:
+            category = random.choice(categories)
 
+        filename = os.path.join(self.directory, category)
+        fortunes = list()
+        cur_fortune = ""
+        with open(filename, "r", encoding='utf-8') as fp:
+            for line in fp:
+                if line == "%\n":
+                    if cur_fortune:
+                        # Remove last \n
+                        fortunes.append(cur_fortune[:-1])
+                    cur_fortune = ""
+                else:
+                    cur_fortune += line
+        # If file does not end with '%\n', we can have one
+        # fortune left:
+        if cur_fortune:
+            # Remove last \n
+            fortunes.append(cur_fortune[:-1])
+        return random.choice(fortunes)
