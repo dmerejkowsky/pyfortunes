@@ -48,7 +48,7 @@ Usage
 
 First, start the daemon:
 * On unix
-  * Edit /etc/pyfd.conf, and run /usr/bin/pyfd
+  * Edit /etc/pyfd.conf, and run /usr/bin/pyfd /etc/pyfd.conf
 
 * On windows
   * Edit c:\Python32\Lib\site-packages\pyfortunes\pyfd.conf
