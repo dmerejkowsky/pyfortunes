@@ -5,9 +5,9 @@ on_win = sys.platform.startswith("win")
 
 scripts = ['bin/pyf-add',
            'bin/pyf-get']
-packages = ["pyfortunes"]
+packages = ["pyfortunes", "pyfortunes.thirdparty"]
+
 if on_win:
-    packages.append("pyfortunes.thirdparty")
     scripts.extend(['bin/pyf-add.bat',
                     'bin/pyf-get.bat',
                     'bin/pyfd_service.py',
@@ -15,7 +15,7 @@ if on_win:
     data_files = list()
     package_data = {"pyfortunes" : ["pyfd.conf"]}
 else:
-    scritps.append('bin/pyfd')
+    scripts.append('bin/pyfd')
     data_files = [('/etc/', ["pyfortunes/pyfd.conf"])]
     package_data = dict()
 
