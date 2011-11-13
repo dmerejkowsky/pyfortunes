@@ -13,7 +13,7 @@ def main():
     pyfortunes.client.configure_parser(parser)
     parser.add_argument("category", nargs='?')
     args = parser.parse_args()
-    url = args.url
+    url = pyfortunes.client.get_url(args)
     category = args.category
     proxy = pyfortunes.client.get_proxy(url)
     fortune = pyfortunes.client.get_fortune(proxy,

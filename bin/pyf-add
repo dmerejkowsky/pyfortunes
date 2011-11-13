@@ -14,7 +14,7 @@ def main():
         help='Category of the fortune'
     )
     args = parser.parse_args()
-    url = args.url
+    url = pyfortunes.client.get_url(args)
     text_fp  = args.text_file
     category = args.category
     if text_fp:

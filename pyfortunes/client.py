@@ -4,6 +4,7 @@
 import os
 import sys
 
+import configparser
 import subprocess
 import tempfile
 import xmlrpc.client
@@ -92,12 +93,29 @@ def configure_parser(parser):
     """
     parser.add_argument("--url", help="Pyfortunes server url. "
         "Defaults to %s" % DEFAULT_URL)
-    parser.set_defaults(url=DEFAULT_URL)
+
+def get_url(args):
+    """ Get the url to use, using a argparse.Namespace
+    object
+
+    """
+    if args.url is not None:
+        return args.url
+    conf_path = os.path.expanduser("~/.config/pyfortunes.cfg")
+    parser = configparser.ConfigParser()
+    parser.read(conf_path)
+    if not parser.has_option("server", "url"):
+        return DEFAULT_URL
+    url = parser.get("server", "url")
+    return url
+
+
 
 def get_proxy(url=DEFAULT_URL):
     """ Get an XML RPC server proxy from an URL """
     proxy = xmlrpc.client.ServerProxy(url)
     return proxy
+
 
 def get_fortune(proxy, category=None):
     if category is None:

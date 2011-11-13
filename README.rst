@@ -63,6 +63,16 @@ Now you can run::
   (to add a new fotune to the database)
 
 
+By default, the URL will be ``http://localhost:8080``
+
+If the pyfd daemon is running on a remote server, you can specify
+the url of the server using the ``--url`` argument, or simply
+create a config file in ``~/.config/pyfortunes.cfg`` like this ::
+
+  [server]
+  url = http://example.com:4242
+
+
 Bugs
 ----
 
