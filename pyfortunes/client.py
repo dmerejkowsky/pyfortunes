@@ -67,6 +67,9 @@ def add_fortune(proxy, text=None, category=None):
             retcode = subprocess.call(["vim", tmp_file])
         if retcode != 0:
             return
+        if not os.path.exists(tmp_file):
+            print("No fortune given, aborting")
+            return
         with open(tmp_file, "r", encoding='utf-8') as fp:
             text = fp.read()
         os.remove(tmp_file)
