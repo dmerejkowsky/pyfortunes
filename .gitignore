@@ -1,3 +1,4 @@
 *.pyc
-*.html
+README.html
 build/
+*.egg-info
