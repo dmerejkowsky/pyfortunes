@@ -13,6 +13,7 @@ import pyfortunes
 def get_quote(id):
     url = "http://danstonchat.com/%s.html" % id
     response = requests.get(url)
+    response.encoding = 'utf-8'
     html = response.text
     return extract_quote(html, id)
 
