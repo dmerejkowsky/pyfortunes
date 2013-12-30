@@ -21,7 +21,7 @@ else:
 
 
 setup(name='pyfortunes',
-    version='0.1',
+    version='1.1.2',
     description='XML RPC client/server for a fortune database',
     author_email = 'yannicklm1337@gmail.com',
     author = 'yannicklm',
