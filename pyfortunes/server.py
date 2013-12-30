@@ -15,9 +15,10 @@ class FortunesServer(xmlrpc.server.SimpleXMLRPCServer):
     Exposes methods from the backend's FortunesDB class
 
     """
-    def __init__(self, directory, port=8080):
+    def __init__(self, directory, port=8080, address="0.0.0.0"):
         self.directory = directory
-        super().__init__(("0.0.0.0", port), logRequests=False)
+        super().__init__((address, port), logRequests=False)
+        print("Listening on %s:%s" % (address, port))
         self.db = pyfortunes.backend.FortunesDB(directory)
 
     def add_fortune(self, category, text):
@@ -50,11 +51,11 @@ class FortunesServer(xmlrpc.server.SimpleXMLRPCServer):
         return func(*params)
 
 
-def run_server(directory, port):
+def run_server(directory, address="0.0.0.0", port="8080"):
     """ Runs a fortunes server
 
     """
-    server = FortunesServer(directory, port)
+    server = FortunesServer(directory, port=port, address=address)
     server.register_instance(server)
     try:
         server.serve_forever()

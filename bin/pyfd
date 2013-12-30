@@ -143,6 +143,7 @@ def main():
     pyfd_conf = config['pyfd']
     port = pyfd_conf.get('port', '8080')
     user = pyfd_conf.get('user', 'pyfd')
+    address = pyfd_conf.get('address', '0.0.0.0')
     directory = pyfd_conf.get('directory', "/var/lib/pyfd")
     pid_file  = pyfd_conf.get('pid_file',  "/var/run/pyfd.pid")
 
@@ -167,7 +168,7 @@ def main():
         detach_process()
         write_pid_file(pid_file)
         change_process_user(user)
-    pyfortunes.server.run_server(directory, port)
+    pyfortunes.server.run_server(directory, address=address, port=port)
 
 
 if __name__ == "__main__":
