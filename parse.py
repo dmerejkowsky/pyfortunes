@@ -42,7 +42,8 @@ def main():
     fortune_files = [x for x in fortune_files if not os.path.splitext(x)[1]]
     fortunes = dict()
     for fortune_file in fortune_files:
-        fortunes[fortune_file] = parse_fortunes(fortune_file)
+        category = os.path.basename(fortune_file)
+        fortunes[category] = parse_fortunes(fortune_file)
     with open(output, "wb") as fp:
         print("Dumping ...", end="")
         pickle.dump(fortunes, fp)
