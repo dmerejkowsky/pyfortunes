@@ -5,3 +5,5 @@ setup the server:
 hooks/update
 * fortunes-data: mirror of the bar repo, contains the fortunes.pickle file
 * pyfortunes: source code of the server
+
+* set PICKLE_PATH env var

@@ -10,7 +10,8 @@ from flask import abort
 app = Flask(__name__)
 app.debug = os.environ.get("DEBUG")
 
-with open(sys.argv[1], "rb") as fp:
+pickle_path = os.environ["PICKLE_PATH"]
+with open(pickle_path, "rb") as fp:
     fortunes = pickle.load(fp)
 
 categories = list(fortunes.keys())
