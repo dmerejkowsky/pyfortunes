@@ -5,8 +5,8 @@ import re
 import pickle
 
 def parse_fortunes(fortune_file):
-    print("Parsing", fortune_file)
     category = os.path.basename(fortune_file)
+    print("Parsing", category)
     res = list()
     cur_text = ""
     cur_index = 0
@@ -35,11 +35,11 @@ def main():
     root_dir = sys.argv[1]
     output = sys.argv[2]
     fortune_files = os.listdir(root_dir)
+    fortune_files = [x for x in fortune_files if x != ".gitignore"]
+    fortune_files = [os.path.join(root_dir, x) for x in fortune_files]
+    fortune_files = [x for x in fortune_files if os.path.isfile(x)]
     fortune_files.sort()
     fortune_files = [x for x in fortune_files if not os.path.splitext(x)[1]]
-    fortune_files.remove(".gitignore")
-    fortune_files = [x for x in fortune_files if os.path.isfile(x)]
-    fortune_files = [os.path.join(root_dir, x) for x in fortune_files]
     fortunes = dict()
     for fortune_file in fortune_files:
         fortunes[fortune_file] = parse_fortunes(fortune_file)
