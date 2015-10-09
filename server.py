@@ -68,4 +68,5 @@ def get_by_category_and_index(category=None, index=None):
     else:
         abort(404)
 
-app.run()
+port = os.environ.get("PORT", 5000)
+app.run(port=int(port))
