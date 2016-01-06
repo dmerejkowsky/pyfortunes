@@ -1,0 +1,12 @@
+[Unit]
+Description=pyforturnes server
+After=network.target 
+
+[Service]
+Type=Simple
+ExecStart=/usr/bin/python3 /home/fortunes/pyfortunes/server.py
+EnvironmentFile=/etc/default/pyfortunes
+User=fortunes
+
+[Install]
+WantedBy=multi-user.target
