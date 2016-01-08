@@ -3,7 +3,7 @@ Description=pyforturnes server
 After=network.target 
 
 [Service]
-Type=Simple
+Type=simple
 ExecStart=/usr/bin/python3 /home/fortunes/pyfortunes/server.py
 EnvironmentFile=/etc/default/pyfortunes
 User=fortunes
