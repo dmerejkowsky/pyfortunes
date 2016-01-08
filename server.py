@@ -6,6 +6,7 @@ import random
 from flask import Flask
 from flask import render_template
 from flask import abort
+from flask import request
 
 app = Flask(__name__)
 app.debug = os.environ.get("DEBUG")
@@ -17,9 +18,34 @@ with open(pickle_path, "rb") as fp:
 categories = list(fortunes.keys())
 categories.sort()
 
+def iter_all_fortunes():
+    """ Generate a unique id, the category and the text for
+    each fortune in the database
+
+    """
+    for category in sorted(fortunes.keys()):
+        in_category = fortunes[category]
+        for i, text in enumerate(in_category):
+            yield (i, category, text)
+
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    if request.method == "GET":
+        return render_template("search.html")
+    else:
+        pattern = request.form.get("pattern")
+        res = list()
+        if pattern:
+            for i, category, text in iter_all_fortunes():
+                if pattern in text:
+                    res.append((i, category, text))
+        return render_template("search_results.html",
+                               pattern=pattern, fortunes=res)
+
 
 @app.route("/categories")
 def show_categories():
@@ -30,13 +56,8 @@ def show_categories():
 def get_random():
     n = sum(len(x) for x in fortunes.values())
     i = random.randint(0, n-1)
-    def iter_all():
-        for category in fortunes.keys():
-            in_category = fortunes[category]
-            for i, text in enumerate(in_category):
-                yield (i, category, text)
 
-    (i, category, text) = list(iter_all())[i]
+    (i, category, text) = list(iter_all_fortunes())[i]
     return render_template("fortune.html", text=text,
                            index=(i + 1), category=category)
 

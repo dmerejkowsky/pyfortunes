@@ -1,0 +1,18 @@
+<h2> Results for {{ pattern }} </h2>
+
+<p>
+  <ul>
+    {% for i, category, text in fortunes %}
+    <li>
+      <a href="fortune/{{ category }}/{{ i + 1 }}">{{ category }} #{{ i + 1}}</a>
+      <pre>
+{{ text }}
+      </pre>
+    </i>
+    {% endfor %}
+  </ul>
+</p>
+
+<p>
+  <a href="/fortunes/search">back</a>
+</p>
