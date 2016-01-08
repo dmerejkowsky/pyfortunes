@@ -32,19 +32,18 @@ def iter_all_fortunes():
 def index():
     return render_template("index.html")
 
-@app.route("/search", methods=["GET", "POST"])
+@app.route("/search")
 def search():
-    if request.method == "GET":
-        return render_template("search.html")
-    else:
-        pattern = request.form.get("pattern")
+    pattern = request.args.get("pattern")
+    if pattern:
         res = list()
-        if pattern:
-            for i, category, text in iter_all_fortunes():
-                if pattern in text:
-                    res.append((i, category, text))
+        for i, category, text in iter_all_fortunes():
+            if pattern in text:
+                res.append((i, category, text))
         return render_template("search_results.html",
-                               pattern=pattern, fortunes=res)
+                pattern=pattern, fortunes=res)
+    else:
+        return render_template("search.html")
 
 
 @app.route("/categories")
