@@ -7,3 +7,8 @@ hooks/post-update
 * pyfortunes: source code of the server
 
 * set PICKLE_PATH env var
+
+* Other environment variables:
+  * PORT
+  * DEBUG (do *not* set on production server)
+  * APPLICATION_ROOT (useful when hosting with nginx for instance)
