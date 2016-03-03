@@ -11,18 +11,19 @@ from flask import request
 app = Flask(__name__)
 app.debug = os.environ.get("DEBUG")
 
-pickle_path = os.environ["PICKLE_PATH"]
-with open(pickle_path, "rb") as fp:
-    fortunes = pickle.load(fp)
+def get_fortunes():
+    pickle_path = os.environ["PICKLE_PATH"]
+    with open(pickle_path, "rb") as fp:
+        fortunes = pickle.load(fp)
+    return fortunes
 
-categories = list(fortunes.keys())
-categories.sort()
 
 def iter_all_fortunes():
     """ Generate a unique id, the category and the text for
     each fortune in the database
 
     """
+    fortunes = get_fortunes()
     for category in sorted(fortunes.keys()):
         in_category = fortunes[category]
         for i, text in enumerate(in_category):
@@ -48,11 +49,15 @@ def search():
 
 @app.route("/categories")
 def show_categories():
+    fortunes = get_fortunes()
+    categories = list(fortunes.keys())
+    categories.sort()
     return render_template("categories.html",
                            categories=categories)
 
 @app.route("/fortune")
 def get_random():
+    fortunes = get_fortunes()
     n = sum(len(x) for x in fortunes.values())
     i = random.randint(0, n-1)
 
@@ -62,6 +67,7 @@ def get_random():
 
 @app.route("/fortune/<category>")
 def get_by_category(category=None):
+    fortunes = get_fortunes()
     in_category = fortunes.get(category)
     if not in_category:
         abort(404)
@@ -73,6 +79,7 @@ def get_by_category(category=None):
 
 @app.route("/fortune/<category>/<index>")
 def get_by_category_and_index(category=None, index=None):
+    fortunes = get_fortunes()
     try:
         i = int(index) - 1
     except ValueError:
