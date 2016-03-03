@@ -10,6 +10,9 @@ from flask import request
 
 app = Flask(__name__)
 app.debug = os.environ.get("DEBUG")
+application_root = os.environ.get("APPLICATION_ROOT")
+if application_root:
+    app.config["APPLICATION_ROOT"] = application_root
 
 def get_fortunes():
     pickle_path = os.environ["PICKLE_PATH"]
@@ -95,5 +98,6 @@ def get_by_category_and_index(category=None, index=None):
     else:
         abort(404)
 
-port = os.environ.get("PORT", 5000)
-app.run(port=int(port))
+if __name__ == "__main__":
+    port = os.environ.get("PORT", 5000)
+    app.run(port=int(port))
