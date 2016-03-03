@@ -2,8 +2,9 @@
 
   <h2> Links </h2>
 
+
 <ul>
-  <li><a href="/fortune">Random fortune</a></li>
-  <li><a href="/categories">All known categories</a></li>
-  <li><a href="/search">Search</a></li>
+  <li><a href="/{{ config.get("APPLICATION_ROOT", "") }}fortune">Random fortune</a></li>
+  <li><a href="/{{ config.get("APPLICATION_ROOT", "") }}categories">All known categories</a></li>
+  <li><a href="/{{ config.get("APPLICATION_ROOT", "") }}search">Search</a></li>
 </ul>

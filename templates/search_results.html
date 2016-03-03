@@ -4,7 +4,9 @@
   <ul>
     {% for i, category, text in fortunes %}
     <li>
-      <a href="fortune/{{ category }}/{{ i + 1 }}">{{ category }} #{{ i + 1}}</a>
+      <a href="/{{ config.get("APPLICATION_ROOT", "") }}fortune/{{ category }}/{{ i + 1 }}">
+        {{ category }} #{{ i + 1}}
+      </a>
       <pre>
 {{ text }}
       </pre>
@@ -14,5 +16,5 @@
 </p>
 
 <p>
-  <a href="/search">back</a>
+  <a href="/{{ config.get("APPLICATION_ROOT", "") }}search">back</a>
 </p>

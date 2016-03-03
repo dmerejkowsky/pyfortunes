@@ -1,8 +1,8 @@
-<a href="/fortune/{{ category }}/{{ index }}">
+<a href="/{{ config.get("APPLICATION_ROOT", "") }}fortune/{{ category }}/{{ index }}">
 {{ category }} #{{ index }}</a>
 
 <pre>
 {{ text[:-1] }}
 </pre>
 
-<a href="/">back</a>
+<a href="/{{ config.get("APPLICATION_ROOT", "") }}">back</a>

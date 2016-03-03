@@ -1,6 +1,6 @@
 <h2> Fortune search </h2>
 
-<form name="search" action="/search" method="get" >
+<form name="search" action="/{{ config.get("APPLICATION_ROOT", "") }}search" method="get" >
   Search : <input type="text" name="pattern">
   <input type="submit" value="Submit" />
 </form>

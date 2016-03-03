@@ -1,7 +1,8 @@
+
 <h1>Categories</h1>
 
 <ul>
   {% for category in categories %}
-  <li><a href="/fortune/{{ category }}">{{ category }}</a></li>
+  <li><a href="/{{ config.get("APPLICATION_ROOT", "") }}fortune/{{ category }}">{{ category }}</a></li>
   {% endfor %}
 </ul>

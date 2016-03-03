@@ -1,4 +1,6 @@
 *.pyc
+__pycache__
 README.html
 build/
 *.egg-info
+*.pickle
