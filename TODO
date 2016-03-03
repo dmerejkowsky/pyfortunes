@@ -3,3 +3,7 @@ Make it work in local mode again
   config key and it' s None)
 
 Write some tests
+
+factorize link generation in templates
+(something like the link_to(url, category) I had
+in rfortunes)
