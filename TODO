@@ -1,2 +1,5 @@
 Make it work in local mode again
+  (by default app.config has a APPLICATION_ROOT
+  config key and it' s None)
+
 Write some tests
