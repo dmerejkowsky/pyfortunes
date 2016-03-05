@@ -1,9 +1,10 @@
 #!/bin/bash -xe
 
-BASE_DIR="/home/yannick/srv"
+BASE_DIR="/home/fortunes"
 
 cd ${BASE_DIR}/fortunes-data
 GIT_DIR=.git git fetch
 GIT_DIR=.git git reset --hard origin/master
 cd ${BASE_DIR}/pyfortunes
-python parse.py ${BASE_DIR}/fortunes-data ${BASE_DIR}/fortunes-data/fortunes.pickle
+python3 parse.py ${BASE_DIR}/fortunes-data ${BASE_DIR}/fortunes-data/fortunes.pickle
+curl http://localhost/fortunes/reload
