@@ -13,6 +13,9 @@ app.debug = os.environ.get("DEBUG")
 application_root = os.environ.get("APPLICATION_ROOT")
 if application_root:
     app.config["APPLICATION_ROOT"] = application_root
+# Ugly hack:
+else:
+    app.config["APPLICATION_ROOT"] = ""
 
 def get_fortunes():
     pickle_path = os.environ["PICKLE_PATH"]

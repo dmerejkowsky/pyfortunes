@@ -1,10 +1,10 @@
 {# On top of the page there are two links <category> | <number> #}
-<a href="/{{ config.get("APPLICATION_ROOT", "") }}fortune/{{ category }}">
+<a href="/{{ config["APPLICATION_ROOT"] }}fortune/{{ category }}">
 {{ category }}</a> |
-<a href="/{{ config.get("APPLICATION_ROOT", "") }}fortune/{{ category }}/{{ index }}"> #{{ index }}</a>
+<a href="/{{ config["APPLICATION_ROOT"] }}fortune/{{ category }}/{{ index }}"> #{{ index }}</a>
 
 <pre>
 {{ text[:-1] }}
 </pre>
 
-<a href="/{{ config.get("APPLICATION_ROOT", "") }}">back</a>
+<a href="/{{ config["APPLICATION_ROOT"] }}">back</a>

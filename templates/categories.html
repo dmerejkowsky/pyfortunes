@@ -3,6 +3,6 @@
 
 <ul>
   {% for category in categories %}
-  <li><a href="/{{ config.get("APPLICATION_ROOT", "") }}fortune/{{ category }}">{{ category }}</a></li>
+  <li><a href="/{{ config["APPLICATION_ROOT"] }}fortune/{{ category }}">{{ category }}</a></li>
   {% endfor %}
 </ul>
