@@ -17,27 +17,37 @@ if application_root:
 else:
     app.config["APPLICATION_ROOT"] = ""
 
-def get_fortunes():
+
+FORTUNES = None
+
+def reload_fortunes():
+    """ set the global FORTUNES variable
+    called by the special route /reload
+
+    """
+    global FORTUNES
     pickle_path = os.environ["PICKLE_PATH"]
     with open(pickle_path, "rb") as fp:
-        fortunes = pickle.load(fp)
-    return fortunes
-
+        FORTUNES = pickle.load(fp)
 
 def iter_all_fortunes():
     """ Generate a unique id, the category and the text for
     each fortune in the database
 
     """
-    fortunes = get_fortunes()
-    for category in sorted(fortunes.keys()):
-        in_category = fortunes[category]
+    for category in sorted(FORTUNES.keys()):
+        in_category = FORTUNES[category]
         for i, text in enumerate(in_category):
             yield (i, category, text)
 
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/reload")
+def reload():
+    reload_fortunes()
+    return "OK"
 
 @app.route("/search")
 def search():
@@ -55,16 +65,14 @@ def search():
 
 @app.route("/categories")
 def show_categories():
-    fortunes = get_fortunes()
-    categories = list(fortunes.keys())
+    categories = list(FORTUNES.keys())
     categories.sort()
     return render_template("categories.html",
                            categories=categories)
 
 @app.route("/fortune")
 def get_random():
-    fortunes = get_fortunes()
-    n = sum(len(x) for x in fortunes.values())
+    n = sum(len(x) for x in FORTUNES.values())
     i = random.randint(0, n-1)
 
     (i, category, text) = list(iter_all_fortunes())[i]
@@ -73,8 +81,7 @@ def get_random():
 
 @app.route("/fortune/<category>")
 def get_by_category(category=None):
-    fortunes = get_fortunes()
-    in_category = fortunes.get(category)
+    in_category = FORTUNES.get(category)
     if not in_category:
         abort(404)
     n = len(in_category)
@@ -85,12 +92,11 @@ def get_by_category(category=None):
 
 @app.route("/fortune/<category>/<index>")
 def get_by_category_and_index(category=None, index=None):
-    fortunes = get_fortunes()
     try:
         i = int(index) - 1
     except ValueError:
         abort(404)
-    in_category = fortunes.get(category)
+    in_category = FORTUNES.get(category)
     if not in_category:
         abort(404)
     n = len(in_category)
@@ -103,4 +109,6 @@ def get_by_category_and_index(category=None, index=None):
 
 if __name__ == "__main__":
     port = os.environ.get("PORT", 5000)
+    # Call it at least once
+    reload_fortunes()
     app.run(port=int(port))
