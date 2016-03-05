@@ -47,7 +47,7 @@ def index():
 @app.route("/reload")
 def reload():
     reload_fortunes()
-    return "OK"
+    return "OK\n"
 
 @app.route("/search")
 def search():
