@@ -47,7 +47,7 @@ def main():
     with open(output, "wb") as fp:
         print("Dumping ...", end="")
         pickle.dump(fortunes, fp)
-        print("ok")
+        print(" OK")
 
 if __name__ == "__main__":
     main()
