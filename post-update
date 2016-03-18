@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 
 BASE_DIR="/home/fortunes"
 
@@ -7,4 +7,5 @@ GIT_DIR=.git git fetch
 GIT_DIR=.git git reset --hard origin/master
 cd ${BASE_DIR}/pyfortunes
 python3 parse.py ${BASE_DIR}/fortunes-data ${BASE_DIR}/fortunes-data/fortunes.pickle
-curl http://localhost/fortunes/reload
+echo -n "Reload fortunes ... "
+curl --silent http://localhost/fortunes/reload
