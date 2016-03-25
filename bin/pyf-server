@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+
+import pyfortunes.server
+
+def main():
+    pyfortunes.server.main()
+
+if __name__ == "__main__":
+    main()

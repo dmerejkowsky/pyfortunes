@@ -8,14 +8,9 @@ from flask import render_template
 from flask import abort
 from flask import request
 
+import pyfortunes.config
+
 app = Flask(__name__)
-app.debug = os.environ.get("DEBUG")
-application_root = os.environ.get("APPLICATION_ROOT")
-if application_root:
-    app.config["APPLICATION_ROOT"] = application_root
-# Ugly hack:
-else:
-    app.config["APPLICATION_ROOT"] = ""
 
 
 FORTUNES = None
@@ -26,7 +21,7 @@ def reload_fortunes():
 
     """
     global FORTUNES
-    pickle_path = os.environ["PICKLE_PATH"]
+    pickle_path = app.config["FORTUNES_PICKLE_PATH"]
     with open(pickle_path, "rb") as fp:
         FORTUNES = pickle.load(fp)
 
@@ -107,8 +102,19 @@ def get_by_category_and_index(category=None, index=None):
     else:
         abort(404)
 
-if __name__ == "__main__":
-    port = os.environ.get("PORT", 5000)
+def main():
+    config = pyfortunes.config.get_config()
+    if not config.has_section("server"):
+        sys.exit("Could not find server config!")
+    server_config = config["server"]
+    app.config["FORTUNES_PICKLE_PATH"] = server_config["pickle_path"]
+    port = int(server_config.get("port", 5000))
+    app.debug = server_config.getboolean("debug", False)
+    app.config["APPLICATION_ROOT"] = server_config.get("application_root", "")
+
     # Call it at least once
     reload_fortunes()
-    app.run(port=int(port))
+    app.run(port=port)
+
+if __name__ == "__main__":
+    main()

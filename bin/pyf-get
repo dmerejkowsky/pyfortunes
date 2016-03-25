@@ -5,7 +5,8 @@ import sys
 import bs4
 import configparser
 import requests
-from xdg import BaseDirectory
+
+import pyfortunes.config
 
 def main():
     parser = argparse.ArgumentParser()
@@ -14,11 +15,7 @@ def main():
     display_fortune(category=args.category)
 
 def display_fortune(category=None):
-    config_path = BaseDirectory.load_first_config("pyfortunes.cfg")
-    if not config_path:
-        sys.exit("pyfortunes.cfg not found")
-    config = configparser.ConfigParser()
-    config.read(config_path)
+    config = pyfortunes.config.get_config()
     url = config["server"]["url"]
     url = url + "/fortune"
     if category:
