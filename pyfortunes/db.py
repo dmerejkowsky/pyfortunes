@@ -97,6 +97,10 @@ class FortuneDB():
 
     def _run_git(self, *args, abort_on_error=True):
         cmd = ("git", ) + args
-        rc = subprocess.call(cmd, cwd=self.base_dir)
+        env = os.environ.copy()
+        for key in list(env.keys()):
+            if "GIT" in key:
+                del env[key]
+        rc = subprocess.call(cmd, cwd=self.base_dir, env=env)
         if abort_on_error and (rc != 0):
             sys.exit(rc)
