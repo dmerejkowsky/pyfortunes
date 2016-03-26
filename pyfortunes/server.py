@@ -102,7 +102,7 @@ def get_by_category_and_index(category=None, index=None):
     else:
         abort(404)
 
-def main():
+def setup():
     config = pyfortunes.config.get_config()
     if not config.has_section("server"):
         sys.exit("Could not find server config!")
@@ -112,9 +112,13 @@ def main():
     app.debug = server_config.getboolean("debug", False)
     app.config["APPLICATION_ROOT"] = server_config.get("application_root", "")
 
-    # Call it at least once
     reload_fortunes()
+
+def main():
     app.run(port=port)
+
+# Make sure app is correctly setup when used with uwsgi
+setup()
 
 if __name__ == "__main__":
     main()
