@@ -1,0 +1,19 @@
+[Unit]
+Description=uWSGI service unit for pyfortunes
+After=syslog.target
+
+[Service]
+User=fortunes
+Group=www-data
+ExecStart=/home/fortunes/venvs/pyfortunes/bin/uwsgi --ini /etc/uwsgi/pyfortunes.ini
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -INT $MAINPID
+Restart=always
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+KillSignal=SIGQUIT
+
+[Install]
+WantedBy=multi-user.target
+ 
