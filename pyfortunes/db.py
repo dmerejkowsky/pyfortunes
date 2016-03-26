@@ -33,6 +33,9 @@ class FortuneDB():
         out, _ = process.communicate()
         if process.returncode != 0:
             sys.exit(1)
+        # We want the 'exact' output of git-diff, so
+        # we can't encode
+        sys.stdout.buffer.write(out)
         answer = input("OK to push? (Y/n)")
         if answer in ["y", "Y", ""]:
             self._run_git("push")
