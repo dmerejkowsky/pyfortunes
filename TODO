@@ -1,9 +1,9 @@
-Make it work in local mode again
-  (by default app.config has a APPLICATION_ROOT
-  config key and it' s None)
-
 Write some tests
 
 factorize link generation in templates
 (something like the link_to(url, category) I had
 in rfortunes)
+
+make fortune/random redirect to a permalink
+(ala XKCD) : this way you can get back to a previous
+fortune
