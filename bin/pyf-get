@@ -1,34 +1,12 @@
-#!/usr/bin/python3
+#!/bin/bash
 
-import argparse
-import sys
-import bs4
-import configparser
-import requests
+# get a randow fortune from the server.
+# you can pass a category as parameter to limit search
 
-import pyfortunes.config
+URL=http://sd-20870.dedibox.fr/fortunes
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("category", nargs="?")
-    args = parser.parse_args()
-    display_fortune(category=args.category)
-
-def display_fortune(category=None):
-    config = pyfortunes.config.get_config()
-    url = config["server"]["url"]
-    url = url + "/fortune"
-    if category:
-        url += "/%s" % category
-    as_html = requests.get(url).text
-    response = requests.get(url)
-    response.raise_for_status()
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
-    pre = soup.find("pre").text
-    # remove leading \n
-    print(pre[1:], end="")
-    ref = soup.find("a").text
-    print(ref.strip())
-
-if __name__ == "__main__":
-    main()
+if [[ -z "$1" ]] ; then
+  curl ${URL}/fortune?format=text
+else
+  curl ${URL}/fortune/${1}?format=text
+fi
