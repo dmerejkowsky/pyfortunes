@@ -21,7 +21,9 @@ def display_fortune(category=None):
     if category:
         url += "/%s" % category
     as_html = requests.get(url).text
-    soup = bs4.BeautifulSoup(as_html, "html.parser")
+    response = requests.get(url)
+    response.raise_for_status()
+    soup = bs4.BeautifulSoup(response.text, "html.parser")
     pre = soup.find("pre").text
     # remove leading \n
     print(pre[1:], end="")
