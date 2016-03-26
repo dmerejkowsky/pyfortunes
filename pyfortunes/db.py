@@ -20,18 +20,25 @@ class FortuneDB():
         self._run_git("add", fortune_file)
         self._run_git("commit", "--message", "update %s" % category)
 
-    def pull(self):
-        self._run_git("pull")
+    def sync(self):
+        # Make sure we are always up-to-date, even in case of push-f
+        rc, out = self._run_git("status", "--porcelain", abort_on_error=False)
+        if rc != 0:
+            print(out)
+            sys.exit(rc)
+        for line in out.splitlines():
+            if line.startswith("M"):
+                sys.exit("Your worktree is not clean")
+        self._run_git("fetch")
+        self._run_git("reset", "--hard", "origin/master")
 
     def push(self):
         cmd = ["git", "diff",
                "--color=always", "--word-diff",
                "HEAD~1", "HEAD"
         ]
-        process = subprocess.Popen(cmd, cwd=self.base_dir,
-                               stdout=subprocess.PIPE)
-        out, _ = process.communicate()
-        if process.returncode != 0:
+        rc, out = self._run_git(*cmd, abort_on_error=False)
+        if rc != 0:
             sys.exit(1)
         # We want the 'exact' output of git-diff, so
         # we can't encode
@@ -57,7 +64,7 @@ class FortuneDB():
             self.fortunes[category] = self._parse_fortunes_in_category(category)
 
     def append_and_push(self, text, *, category=None):
-        self.pull()
+        self.sync()
         self.append_fortune(text, category=category)
         self.commit(category)
         self.push()
@@ -104,6 +111,13 @@ class FortuneDB():
         for key in list(env.keys()):
             if "GIT" in key:
                 del env[key]
-        rc = subprocess.call(cmd, cwd=self.base_dir, env=env)
-        if abort_on_error and (rc != 0):
-            sys.exit(rc)
+        if abort_on_error:
+            rc = subprocess.call(cmd, cwd=self.base_dir, env=env)
+            if rc != 0:
+                sys.exit(rc)
+        else:
+            process = subprocess.Popen(cmd, cwd=self.base_dir, env=env,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.STDOUT)
+            out, _ = process.communicate()
+            return process.returncode, out.decode("utf-8")
