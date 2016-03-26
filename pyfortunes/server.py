@@ -4,6 +4,7 @@ import pickle
 import random
 
 from flask import Flask
+from flask import Response
 from flask import render_template
 from flask import abort
 from flask import request
@@ -14,6 +15,9 @@ app = Flask(__name__)
 
 
 FORTUNES = None
+PICKLE_PATH = None
+PORT = 5000
+
 
 def reload_fortunes():
     """ set the global FORTUNES variable
@@ -21,8 +25,7 @@ def reload_fortunes():
 
     """
     global FORTUNES
-    pickle_path = app.config["FORTUNES_PICKLE_PATH"]
-    with open(pickle_path, "rb") as fp:
+    with open(PICKLE_PATH, "rb") as fp:
         FORTUNES = pickle.load(fp)
 
 def iter_all_fortunes():
@@ -71,8 +74,7 @@ def get_random():
     i = random.randint(0, n-1)
 
     (i, category, text) = list(iter_all_fortunes())[i]
-    return render_template("fortune.html", text=text,
-                           index=(i + 1), category=category)
+    return render_fortune(text, i, category)
 
 @app.route("/fortune/<category>")
 def get_by_category(category=None):
@@ -82,8 +84,7 @@ def get_by_category(category=None):
     n = len(in_category)
     i = random.randint(0, n-1)
     text = in_category[i]
-    return render_template("fortune.html", text=text,
-                           index=(i + 1), category=category)
+    return render_fortune(text, i, category)
 
 @app.route("/fortune/<category>/<index>")
 def get_by_category_and_index(category=None, index=None):
@@ -97,25 +98,47 @@ def get_by_category_and_index(category=None, index=None):
     n = len(in_category)
     if 0 <= i < n:
         text = in_category[i]
-        return render_template("fortune.html", text=text,
-                               index=(i + 1), category=category)
+        return render_fortune(text, i, category)
     else:
         abort(404)
+
+def render_fortune(text, index, category):
+    """ Helper method to display a given fortune to the user
+    the ?format argument can be given for each URL.
+
+    Accepted values: `text` and `html` (the default)
+
+    """
+    format = request.args.get("format", "html")
+    i = index + 1 # (more readable for humans :)
+    if format == "html":
+        return render_template("fortune.html", text=text,
+                            index=i, category=category)
+    else:
+        res = text
+        res += "\n[%s #%i]\n" % (category, i)
+        return Response(res, mimetype="text/plain")
 
 def setup():
     config = pyfortunes.config.get_config()
     if not config.has_section("server"):
         sys.exit("Could not find server config!")
     server_config = config["server"]
-    app.config["FORTUNES_PICKLE_PATH"] = server_config["pickle_path"]
-    port = int(server_config.get("port", 5000))
+
+    global PICKLE_PATH
+    PICKLE_PATH = server_config["pickle_path"]
+
+    global PORT
+    PORT = server_config.getint("port", 5000)
+
     app.debug = server_config.getboolean("debug", False)
+
     app.config["APPLICATION_ROOT"] = server_config.get("application_root", "")
 
     reload_fortunes()
 
 def main():
-    app.run(port=port)
+    app.run(port=PORT)
 
 # Make sure app is correctly setup when used with uwsgi
 setup()
