@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name="pyfortunes",
-      version="0.1",
+      version="3.0",
       description="fortune as a Web service",
       url="http://sd-20870.dedibox.fr/fortunes",
       author="Dimitri Merejkowsky",
