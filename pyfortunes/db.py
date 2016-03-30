@@ -33,16 +33,14 @@ class FortuneDB():
         self._run_git("reset", "--hard", "origin/master")
 
     def push(self):
-        cmd = ["git", "diff",
-               "--color=always", "--word-diff",
+        cmd = ["diff", "--color=always", "--word-diff",
                "HEAD~1", "HEAD"
         ]
         rc, out = self._run_git(*cmd, abort_on_error=False)
         if rc != 0:
+            print(out)
             sys.exit(1)
-        # We want the 'exact' output of git-diff, so
-        # we can't encode
-        sys.stdout.buffer.write(out)
+        sys.stdout.write(out)
         answer = input("OK to push? (Y/n)")
         if answer in ["y", "Y", ""]:
             self._run_git("push")
