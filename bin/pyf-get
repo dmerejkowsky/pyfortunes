@@ -3,7 +3,7 @@
 # get a randow fortune from the server.
 # you can pass a category as parameter to limit search
 
-URL=http://sd-20870.dedibox.fr/fortunes
+URL=http://dmerej.info/fortunes
 
 if [[ -z "$1" ]] ; then
   curl ${URL}/fortune?format=text

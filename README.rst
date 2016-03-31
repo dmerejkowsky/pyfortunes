@@ -15,7 +15,7 @@ setup the server:
 
     [server]
     # used by pyf-get
-    url = http://sd-20870.dedibox.fr/pyfortunes
+    url = http://dmerej.info/pyfortunes
     # debug = true # uncomment during development
     port = 5000
     pickle_path = /path/to/pickle
