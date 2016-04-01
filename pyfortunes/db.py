@@ -41,7 +41,7 @@ class FortuneDB():
             print(out)
             sys.exit(1)
         sys.stdout.write(out)
-        answer = input("OK to push? (Y/n)")
+        answer = input("OK to push? (Y/n) ")
         if answer in ["y", "Y", ""]:
             self._run_git("push")
 
