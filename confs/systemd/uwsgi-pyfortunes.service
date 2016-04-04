@@ -3,6 +3,7 @@ Description=uWSGI service unit for pyfortunes
 After=syslog.target
 
 [Service]
+RuntimeDirectory=uwsgi-pyfortunes
 User=fortunes
 Group=www-data
 ExecStart=/home/fortunes/venvs/pyfortunes/bin/uwsgi --ini /etc/uwsgi/pyfortunes.ini
@@ -16,4 +17,3 @@ KillSignal=SIGQUIT
 
 [Install]
 WantedBy=multi-user.target
- 
