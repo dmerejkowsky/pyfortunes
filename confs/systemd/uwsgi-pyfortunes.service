@@ -8,6 +8,7 @@ User=fortunes
 Group=www-data
 ExecStart=/usr/bin/uwsgi --ini /etc/uwsgi/pyfortunes.ini
 ExecReload=/bin/kill -HUP $MAINPID
+# till 2.1, TERM means 'brutally reload the stack'
 ExecStop=/bin/kill -INT $MAINPID
 Restart=always
 Type=notify
