@@ -7,3 +7,6 @@ in rfortunes)
 make fortune/random redirect to a permalink
 (ala XKCD) : this way you can get back to a previous
 fortune
+
+in this case, it will be nice to have a bottom line like this:
+  <<first <previous ?random next> last>>
