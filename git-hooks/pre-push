@@ -1,0 +1,3 @@
+#!/bin/sh
+
+~/.virtualenvs/pyfortunes/bin/pyf-parse --no-sync
