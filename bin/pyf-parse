@@ -11,7 +11,8 @@ import pyfortunes.db
 
 def main():
     db = pyfortunes.db.FortuneDB()
-    db.sync()
+    if not "--no-sync" in sys.argv:
+        db.sync()
     db.parse_fortunes()
     config = pyfortunes.config.get_config()
     output = config["server"]["pickle_path"]
