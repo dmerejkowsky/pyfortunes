@@ -116,7 +116,7 @@ def render_fortune(text, index, category):
                             index=i, category=category)
     else:
         res = text
-        res += "\n[%s #%i]\n" % (category, i)
+        res += "[%s #%i]\n" % (category, i)
         return Response(res, mimetype="text/plain")
 
 def setup():
