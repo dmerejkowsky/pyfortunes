@@ -2,4 +2,4 @@
 
 $HOME/venvs/pyfortunes/bin/pyf-parse
 echo -n "Reloading fortunes ... "
-curl --silent http://localhost/fortunes/reload
+curl --silent https://dmerej.info/fortunes/reload
