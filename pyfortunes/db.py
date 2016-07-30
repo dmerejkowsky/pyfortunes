@@ -14,7 +14,8 @@ class FortuneDB():
 
     def commit(self, category):
         fortune_file = os.path.join(self.base_dir, category)
-        rc = subprocess.call(["vim", fortune_file])
+        editor = os.environ["EDITOR"]
+        rc = subprocess.call([editor, fortune_file])
         if rc != 0:
             sys.exit(rc)
         self._run_git("add", fortune_file)
