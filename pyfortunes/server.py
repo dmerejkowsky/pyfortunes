@@ -1,3 +1,4 @@
+import itertools
 import os
 import sys
 import pickle
@@ -70,10 +71,11 @@ def show_categories():
 
 @app.route("/fortune")
 def get_random():
-    n = sum(len(x) for x in FORTUNES.values())
-    i = random.randint(0, n-1)
+    fortunes_count = sum(len(x) for x in FORTUNES.values())
+    global_index = random.randint(0, fortunes_count-1)
 
-    (i, category, text) = list(iter_all_fortunes())[i]
+    fortune = itertools.islice(iter_all_fortunes(), global_index)
+    (i, category, text) = fortune
     return render_fortune(text, i, category)
 
 @app.route("/fortune/<category>")
