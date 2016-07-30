@@ -91,6 +91,7 @@ class FortuneDB():
                 index = match.groups()[0]
                 cur_index += 1
                 if int(index) != cur_index:
+                    print(line)
                     sys.exit("Expecting %i, got %s" % (cur_index, index))
                 if cur_text:
                     res.append(cur_text)
