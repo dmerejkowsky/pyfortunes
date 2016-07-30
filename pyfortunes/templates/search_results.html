@@ -1,4 +1,13 @@
-<h2> Results for {{ pattern }} </h2>
+<h2> Results for '{{ pattern }}' </h2>
+
+{% if max_reached %}
+
+<p style="color:red;">
+You&apos;ve reached the maximum result, only showing
+{{ fortunes|count }} results
+</p>
+
+{% endif %}
 
 <p>
   <ul>
