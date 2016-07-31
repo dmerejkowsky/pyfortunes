@@ -79,8 +79,8 @@ def get_random():
     fortunes_count = sum(len(x) for x in FORTUNES.values())
     global_index = random.randint(0, fortunes_count-1)
 
-    fortune = itertools.islice(iter_all_fortunes(), global_index)
-    (i, category, text) = fortune
+    fortune_gen = itertools.islice(iter_all_fortunes(), global_index)
+    (i, category, text) = list(fortune_gen)[-1]
     return render_fortune(text, i, category)
 
 @app.route("/fortune/<category>")
