@@ -50,13 +50,13 @@ def reload():
 
 @app.route("/search")
 def search():
-    pattern = request.args.get("pattern")
+    pattern = request.args.get("pattern").lower()
     max_count = 100
     max_reached = False
     if pattern:
         # text is the 3rd element of the 'fortune' tuple:
         gen_search_results = (fortune for fortune in iter_all_fortunes()
-                              if pattern in fortune[2])
+                              if pattern in fortune[2].lower())
         search_results = list(itertools.islice(gen_search_results, max_count))
         if len(search_results) == max_count:
             max_reached = True
