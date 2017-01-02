@@ -10,3 +10,7 @@ fortune
 
 in this case, it will be nice to have a bottom line like this:
   <<first <previous ?random next> last>>
+
+changelog please
+
+ansible + docker because why not?
