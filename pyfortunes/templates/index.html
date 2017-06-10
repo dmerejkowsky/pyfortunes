@@ -1,10 +1,12 @@
-<h1> Fortunes server <h1>
+{% extends "base.html" %}
+{% block content %}
+<h1> Fortunes server </h1>
 
   <h2> Links </h2>
 
-
 <ul>
-  <li><a href="/{{ config["APPLICATION_ROOT"] }}fortune">Random fortune</a></li>
-  <li><a href="/{{ config["APPLICATION_ROOT"] }}categories">All known categories</a></li>
-  <li><a href="/{{ config["APPLICATION_ROOT"] }}search">Search</a></li>
+  <li><a href="{{ url_for("get_random") }}">Random fortune</a></li>
+  <li><a href="{{ url_for("show_categories") }}">All known categories</a></li>
+  <li><a href="{{ url_for("search") }}">Search</a></li>
 </ul>
+{% endblock %}

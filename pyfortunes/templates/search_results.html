@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h2> Results for '{{ pattern }}' </h2>
 
 {% if max_reached %}
@@ -13,7 +15,7 @@ You&apos;ve reached the maximum result, only showing
   <ul>
     {% for i, category, text in fortunes %}
     <li>
-      <a href="/{{ config.get("APPLICATION_ROOT", "") }}fortune/{{ category }}/{{ i + 1 }}">
+      <a href="{{ url_for("get_by_category_and_index", category=category, index=i+1) }}">
         {{ category }} #{{ i + 1}}
       </a>
       <pre>
@@ -24,6 +26,4 @@ You&apos;ve reached the maximum result, only showing
   </ul>
 </p>
 
-<p>
-  <a href="/{{ config.get("APPLICATION_ROOT", "") }}search">back</a>
-</p>
+{% endblock %}

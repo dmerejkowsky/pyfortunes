@@ -1,10 +1,10 @@
-{# On top of the page there are two links <category> | <number> #}
-<a href="/{{ config["APPLICATION_ROOT"] }}fortune/{{ category }}">
-{{ category }}</a> |
-<a href="/{{ config["APPLICATION_ROOT"] }}fortune/{{ category }}/{{ index }}"> #{{ index }}</a>
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for("get_by_category", category=category) }}">{{ category }}</a> |
+<a href="{{ url_for("get_by_category_and_index", category=category, index=index) }}">#{{ index }}</a>
 
 <pre>
 {{ text[:-1] }}
 </pre>
 
-<a href="/{{ config["APPLICATION_ROOT"] }}">back</a>
+{% endblock %}
