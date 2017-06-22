@@ -3,7 +3,7 @@
 <h2> Fortune search </h2>
 
 <form name="search" action="{{ url_for("search") }}" method="get" >
-  Search : <input type="text" name="pattern">
+  Search : <input type="text" name="pattern" autofocus />
   <input type="submit" value="Submit" />
 </form>
 {% endblock %}
