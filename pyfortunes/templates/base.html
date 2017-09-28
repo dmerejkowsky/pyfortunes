@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="generator" value="pyfortunes" />
+  <meta name="generator" content="pyfortunes" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for("static", filename="style.css") }}" />
   <title>Pyfortunes</title>
@@ -9,7 +9,7 @@
 <body>
 
     <nav >
-      <a href="{{ url_for("index") }}">Home</a></li> | <a href="{{ url_for("search") }}">Search</a>
+      <a href="{{ url_for("index") }}">Home</a> | <a href="{{ url_for("search") }}">Search</a>
     </nav>
 
 {% block content %}
@@ -18,6 +18,5 @@
 <footer>
   Powered by <a href="https://github.com/dmerejkowsky/pyfortunes">pyfortunes</a>
 </footer>
-
 
 </body>
