@@ -2,8 +2,6 @@ import itertools
 import pickle
 import random
 import sys
-import time
-
 
 from flask import Flask
 from flask import Response
@@ -61,20 +59,16 @@ def search():
     max_count = 100
     max_reached = False
     if pattern:
-        start = time.time()
         # text is the 3rd element of the 'fortune' tuple:
         gen_search_results = (fortune for fortune in iter_all_fortunes()
                               if pattern.lower() in fortune[2].lower())
         search_results = list(itertools.islice(gen_search_results, max_count))
         if len(search_results) == max_count:
             max_reached = True
-        end = time.time()
-        time_spent = int(end - start) * 1000
         return render_template(
             "search_results.html",
             pattern=pattern, fortunes=search_results,
-            max_reached=max_reached,
-            time_spent=time_spent,
+            max_reached=max_reached
         )
     else:
         return render_template("search.html")
