@@ -41,7 +41,9 @@ def iter_all_fortunes():
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    total = sum(len(FORTUNES[c]) for c in FORTUNES.keys())
+    total_str = "{:,}".format(total)
+    return render_template("index.html", total_str=total_str)
 
 @app.route("/reload")
 def reload():
