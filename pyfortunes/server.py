@@ -1,8 +1,7 @@
 import itertools
-import os
-import sys
 import pickle
 import random
+import sys
 
 from flask import Flask
 from flask import Response
@@ -29,6 +28,7 @@ def reload_fortunes():
     with open(PICKLE_PATH, "rb") as fp:
         FORTUNES = pickle.load(fp)
 
+
 def iter_all_fortunes():
     """ Generate a unique id, the category and the text for
     each fortune in the database
@@ -39,16 +39,19 @@ def iter_all_fortunes():
         for i, text in enumerate(in_category):
             yield (i, category, text)
 
+
 @app.route("/")
 def index():
     total = sum(len(FORTUNES[c]) for c in FORTUNES.keys())
     total_str = "{:,}".format(total)
     return render_template("index.html", total_str=total_str)
 
+
 @app.route("/reload")
 def reload():
     reload_fortunes()
     return "OK\n"
+
 
 @app.route("/search")
 def search():
@@ -62,9 +65,11 @@ def search():
         search_results = list(itertools.islice(gen_search_results, max_count))
         if len(search_results) == max_count:
             max_reached = True
-        return render_template("search_results.html",
-                pattern=pattern, fortunes=search_results,
-                max_reached=max_reached)
+        return render_template(
+            "search_results.html",
+            pattern=pattern, fortunes=search_results,
+            max_reached=max_reached
+        )
     else:
         return render_template("search.html")
 
@@ -76,6 +81,7 @@ def show_categories():
     return render_template("categories.html",
                            categories=categories)
 
+
 @app.route("/fortune")
 def get_random():
     fortunes_count = sum(len(x) for x in FORTUNES.values())
@@ -84,6 +90,7 @@ def get_random():
     fortune_gen = itertools.islice(iter_all_fortunes(), global_index)
     (i, category, text) = list(fortune_gen)[-1]
     return render_fortune(text, i, category)
+
 
 @app.route("/fortune/<category>")
 def get_by_category(category=None):
@@ -94,6 +101,7 @@ def get_by_category(category=None):
     i = random.randint(0, n-1)
     text = in_category[i]
     return render_fortune(text, i, category)
+
 
 @app.route("/fortune/<category>/<index>")
 def get_by_category_and_index(category=None, index=None):
@@ -111,6 +119,7 @@ def get_by_category_and_index(category=None, index=None):
     else:
         abort(404)
 
+
 def render_fortune(text, index, category):
     """ Helper method to display a given fortune to the user
     the ?format argument can be given for each URL.
@@ -119,14 +128,17 @@ def render_fortune(text, index, category):
 
     """
     format = request.args.get("format", "html")
-    i = index + 1 # (more readable for humans :)
+    i = index + 1  # (more readable for humans :)
     if format == "html":
-        return render_template("fortune.html", text=text,
-                            index=i, category=category)
+        return render_template(
+            "fortune.html",
+            text=text, index=i, category=category
+        )
     else:
         res = text
         res += "[%s #%i]\n" % (category, i)
         return Response(res, mimetype="text/plain")
+
 
 def setup():
     config = pyfortunes.config.get_config()
@@ -146,8 +158,10 @@ def setup():
 
     reload_fortunes()
 
+
 def main():
     app.run(port=PORT)
+
 
 # Make sure app is correctly setup when used with uwsgi
 setup()

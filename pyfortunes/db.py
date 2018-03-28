@@ -34,8 +34,9 @@ class FortuneDB():
         self._run_git("reset", "--hard", "origin/master")
 
     def push(self):
-        cmd = ["diff", "--color=always", "--word-diff",
-               "HEAD~1", "HEAD"
+        cmd = [
+            "diff", "--color=always", "--word-diff",
+            "HEAD~1", "HEAD"
         ]
         rc, out = self._run_git(*cmd, abort_on_error=False)
         if rc != 0:
@@ -83,7 +84,6 @@ class FortuneDB():
         res = list()
         cur_text = ""
         cur_index = 0
-        cur_fortune = None
         with open(fortune_file, "r") as fp:
             lines = fp.readlines()
         for line in lines:
