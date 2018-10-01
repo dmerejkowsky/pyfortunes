@@ -14,38 +14,14 @@ def get_quote(id):
     response = requests.get(url)
     response.encoding = 'utf-8'
     html = response.text
-    return extract_quote(html, id)
+    return extract_quote(html)
 
 
-def extract_quote(html, id):
+def extract_quote(html):
     soup = BeautifulSoup(html, "html.parser")
-    url = "https://danstonchat.com/%s.html" % id
-    # The quote is in the first <a> link that points to
-    # self url ...
-    self_links = soup("a", href=url)
-    if not self_links:
-        raise Exception("scrapping failed")
-    res = ""
-    quote = self_links[0]
-    # Quote is: <span class > for the pseudo, then some text, then <br />
-    # Get only the pseudo, but keep the br and wrap the quote at
-    # 80
-    res = ""
-    reply = ""
-    for child in quote.children:
-        if not child.name:
-            reply += child
-        if child.name == "span":
-            reply = child.text
-        if child.name == "br":
-            res += "\n".join(textwrap.wrap(reply))
-            res += "\n"
-            reply = ""
-    # there's no final <br />
-    if reply:
-        res += "\n".join(textwrap.wrap(reply))
-        res += "\n"
-    return res
+    desc = soup.find("meta", {"name": "description"})
+    return desc.attrs["content"]
+
 
 
 def main():
