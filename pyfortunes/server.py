@@ -56,7 +56,7 @@ def reload():
 @app.route("/search")
 def search():
     pattern = request.args.get("pattern")
-    max_count = 100
+    max_count = 1000
     max_reached = False
     if pattern:
         # text is the 3rd element of the 'fortune' tuple:
