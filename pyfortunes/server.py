@@ -96,7 +96,7 @@ def search_in_all(pattern):
 def search_in_category(pattern, category):
     in_category = FORTUNES.get(category)
     if not in_category:
-        abort(404, f"no such category: {category}")
+        abort(404, "no such category: " + category)
     matches = (
         (i, fortune)
         for (i, fortune) in enumerate(in_category, start=1)
