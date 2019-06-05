@@ -78,14 +78,13 @@ def search():
 def show_categories():
     categories = list(FORTUNES.keys())
     categories.sort()
-    return render_template("categories.html",
-                           categories=categories)
+    return render_template("categories.html", categories=categories)
 
 
 @app.route("/fortune")
 def get_random():
     fortunes_count = sum(len(x) for x in FORTUNES.values())
-    global_index = random.randint(0, fortunes_count-1)
+    global_index = random.randint(0, fortunes_count - 1)
 
     fortune_gen = itertools.islice(iter_all_fortunes(), global_index)
     (i, category, text) = list(fortune_gen)[-1]
@@ -98,7 +97,7 @@ def get_by_category(category=None):
     if not in_category:
         abort(404)
     n = len(in_category)
-    i = random.randint(0, n-1)
+    i = random.randint(0, n - 1)
     text = in_category[i]
     return render_fortune(text, i, category)
 
@@ -130,10 +129,7 @@ def render_fortune(text, index, category):
     format = request.args.get("format", "html")
     i = index + 1  # (more readable for humans :)
     if format == "html":
-        return render_template(
-            "fortune.html",
-            text=text, index=i, category=category
-        )
+        return render_template("fortune.html", text=text, index=i, category=category)
     else:
         res = text
         res += "[%s #%i]\n" % (category, i)
