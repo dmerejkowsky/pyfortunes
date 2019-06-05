@@ -59,19 +59,50 @@ def search():
     max_count = 1000
     max_reached = False
     if pattern:
-        # text is the 3rd element of the 'fortune' tuple:
-        gen_search_results = (fortune for fortune in iter_all_fortunes()
-                              if pattern.lower() in fortune[2].lower())
-        search_results = list(itertools.islice(gen_search_results, max_count))
+        res = search_for(pattern)
+        search_results = list(itertools.islice(res, max_count))
         if len(search_results) == max_count:
             max_reached = True
         return render_template(
             "search_results.html",
-            pattern=pattern, fortunes=search_results,
-            max_reached=max_reached
+            pattern=pattern,
+            fortunes=search_results,
+            max_reached=max_reached,
         )
     else:
         return render_template("search.html")
+
+
+def search_for(pattern):
+    if "in:" in pattern:
+        try:
+            pattern, category = pattern.split("in:")
+        except ValueError:
+            abort(400, "invalid query")
+        return search_in_category(pattern, category)
+    else:
+        return search_in_all(pattern)
+
+
+def search_in_all(pattern):
+    # text is the 3rd element of the 'fortune' tuple:
+    return (
+        fortune
+        for fortune in iter_all_fortunes()
+        if pattern.lower() in fortune[2].lower()
+    )
+
+
+def search_in_category(pattern, category):
+    in_category = FORTUNES.get(category)
+    if not in_category:
+        abort(404, f"no such category: {category}")
+    matches = (
+        (i, fortune)
+        for (i, fortune) in enumerate(in_category, start=1)
+        if pattern.lower() in fortune.lower()
+    )
+    return ((i, category, text) for (i, text) in matches)
 
 
 @app.route("/categories")
