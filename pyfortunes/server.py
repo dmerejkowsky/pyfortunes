@@ -99,7 +99,7 @@ def search_in_category(pattern, category):
         abort(404, "no such category: " + category)
     matches = (
         (i, fortune)
-        for (i, fortune) in enumerate(in_category, start=1)
+        for (i, fortune) in enumerate(in_category)
         if pattern.lower() in fortune.lower()
     )
     return ((i, category, text) for (i, text) in matches)
