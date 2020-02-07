@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-
+""" Regenerate the serialized fortunes when the db changes """
 import sys
 import pickle
 
@@ -18,7 +17,3 @@ def main():
         print("Dumping ...", end="")
         pickle.dump(db.fortunes, fp)
         print(" OK")
-
-
-if __name__ == "__main__":
-    main()
